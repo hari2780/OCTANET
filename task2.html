@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo List</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        #todo-container {
+            max-width: 400px;
+            width: 100%;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        #todo-header {
+            background-color: #007bff;
+            color: #fff;
+            padding: 15px;
+            text-align: center;
+            font-size: 24px;
+        }
+
+        #todo-list {
+            padding: 20px;
+        }
+
+        .todo-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .todo-item input[type="checkbox"] {
+            margin-right: 10px;
+        }
+
+        .todo-item.completed {
+            text-decoration: line-through;
+            color: #aaa;
+        }
+
+        #todo-footer {
+            text-align: center;
+            padding: 15px;
+            background-color: #f4f4f4;
+        }
+
+        #add-todo {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="todo-container">
+        <div id="todo-header">Todo List</div>
+        <div id="todo-list">
+            <!-- Todo items will be added here dynamically -->
+        </div>
+        <div id="todo-footer">
+            <input type="text" id="add-todo" placeholder="Add a new todo">
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const todoList = document.getElementById("todo-list");
+            const addTodoInput = document.getElementById("add-todo");
+
+            addTodoInput.addEventListener("keyup", function (event) {
+                if (event.key === "Enter") {
+                    addTodo();
+                }
+            });
+
+            function addTodo() {
+                const todoText = addTodoInput.value.trim();
+                if (todoText !== "") {
+                    const todoItem = createTodoItem(todoText);
+                    todoList.appendChild(todoItem);
+                    addTodoInput.value = "";
+                }
+            }
+
+            function createTodoItem(text) {
+                const todoItem = document.createElement("div");
+                todoItem.className = "todo-item";
+
+                const checkbox = document.createElement("input");
+                checkbox.type = "checkbox";
+
+                const todoText = document.createElement("span");
+                todoText.innerText = text;
+
+                const deleteButton = document.createElement("button");
+                deleteButton.innerText = "Delete";
+                deleteButton.addEventListener("click", function () {
+                    todoList.removeChild(todoItem);
+                });
+
+                todoItem.appendChild(checkbox);
+                todoItem.appendChild(todoText);
+                todoItem.appendChild(deleteButton);
+
+                checkbox.addEventListener("change", function () {
+                    todoItem.classList.toggle("completed", checkbox.checked);
+                });
+
+                return todoItem;
+            }
+        });
+    </script>
+
+</body>
+</html>
